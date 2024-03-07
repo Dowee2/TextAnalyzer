@@ -2,9 +2,9 @@
 #include "../Utils/Helper.h"
 #include <string>
 using namespace std;
-using namespace Utils;
+using namespace utils;
 
-namespace Models
+namespace models
 {
 	Controller::Controller(int argc, char* argv[])
 	{
@@ -21,7 +21,8 @@ namespace Models
 
 	void Controller::handleArguments()
 	{
-		if (this->argc < 2) {
+		if (this->argc < 2)
+		{
 			Helper::Print("Not enough arguments");
 			output.printUsageStatement();
 			exit(1);
@@ -32,7 +33,8 @@ namespace Models
 			{
 				string arg = this->argv[i];
 
-				if (arg[0] != '/') {
+				if (arg[0] != '/')
+				{
 					if (this->inFile == "")
 					{
 						this->inFile = arg;
@@ -40,18 +42,21 @@ namespace Models
 					}
 					else
 					{
-						Settings::OUTPUT_FILE = arg;
+						Settings::output_file = arg;
 					}
 				}
-				else if (arg == "/?") {
+				else if (arg == "/?")
+				{
 					output.printUsageStatement();
 				}
-				else if (arg == "/a" || arg == "/d" || arg == "/da") {
+				else if (arg == "/a" || arg == "/d" || arg == "/da")
+				{
 					if (arg == "/a" || arg == "/d")
 					{
-						if (i+2 > argc)
+						if (i + 2 > argc)
 						{
-							throw std::invalid_argument("Not enough arguments passed in for " + arg + "Usage is: " + arg + " <word> <count>.");
+							throw std::invalid_argument(
+								"Not enough arguments passed in for " + arg + "Usage is: " + arg + " <word> <count>.");
 						}
 						string word = this->argv[i + 1];
 						string count = this->argv[i + 2];
@@ -59,10 +64,12 @@ namespace Models
 						this->deferredOperations[arg].push_back(word);
 						this->deferredOperations[arg].push_back(count);
 					}
-					else {
+					else
+					{
 						if (i + 1 > argc)
 						{
-							throw std::invalid_argument("Not enough Arguments passed in for " + arg + "Usage is: " + arg + " <word>.");
+							throw std::invalid_argument(
+								"Not enough Arguments passed in for " + arg + "Usage is: " + arg + " <word>.");
 						}
 						string word = this->argv[i + 1];
 						i += 1;
@@ -74,7 +81,8 @@ namespace Models
 					string value = arg.substr(2);
 					if (value.find_first_not_of("0123456789") != string::npos)
 					{
-						throw std::invalid_argument("Argument passed in for /c should be an integer. I.e /c6 for column count of 6");
+						throw std::invalid_argument(
+							"Argument passed in for /c should be an integer. I.e /c6 for column count of 6");
 					}
 					int column = stoi(value);
 					Settings::COLUMN_COUNT = column;
@@ -85,7 +93,8 @@ namespace Models
 					string value = arg.substr(2);
 					if (value.find_first_not_of("0123456789") != string::npos)
 					{
-						throw std::invalid_argument("Value passed in for /w should be an integer. I.e /w10 for column width of 10");
+						throw std::invalid_argument(
+							"Value passed in for /w should be an integer. I.e /w10 for column width of 10");
 					}
 					int width = stoi(value);
 					Settings::COLUMN_WIDTH = width;
@@ -99,7 +108,6 @@ namespace Models
 				{
 					Settings::ORDERING = 1;
 				}
-
 			}
 		}
 		catch (const std::exception& e)
@@ -130,7 +138,7 @@ namespace Models
 		}
 
 
-		if (Settings::OUTPUT_FILE != "")
+		if (Settings::output_file != "")
 		{
 			Helper::saveToFile(output.getOutput());
 		}
@@ -156,4 +164,4 @@ namespace Models
 			}
 		}
 	}
-}	
+}

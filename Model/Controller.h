@@ -6,31 +6,28 @@
 #include <vector>
 
 using namespace View;
-namespace Models
+
+namespace models
 {
 	class Controller
 	{
 	private:
-	int argc;
-	char** argv;
-	string inFile;
-	string outFile;
-	map<string, vector<string>> deferredOperations;
+		int argc;
+		char** argv;
+		string inFile;
+		string outFile;
+		map<string, vector<string>> deferredOperations;
 
-	Utils::Settings settings;
-	Output output;
-	AnalyzeText analyzeText;
+		utils::Settings settings;
+		Output output;
+		AnalyzeText analyzeText;
 
-	void handleArguments();
-	void run();
-	void processDeferredOperations();
+		void handleArguments();
+		void run();
+		void processDeferredOperations();
 
 	public:
 		Controller(int argc, char* argv[]);
 		~Controller();
 	};
-
-
 }
-
-

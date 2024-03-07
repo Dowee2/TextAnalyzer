@@ -1,8 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "../Utils/Settings.h"
-#include "../Utils/Helper.h"
 #include <vector>
 #include <map>
 
@@ -25,7 +23,7 @@ namespace View
 		* Prints an error message to the console
 		* @param string error
 		*/
-		void printError(string error);
+		void printError(const string& error);
 		bool static promptOverwite();
 
 
@@ -50,8 +48,5 @@ namespace View
 
 	private:
 		string output;
-
 	};
 }
-
-

@@ -2,12 +2,12 @@
 
 #include <iostream>
 using namespace std;
-namespace Utils
+
+namespace utils
 {
 	class Settings
 	{
 	public:
-
 		Settings();
 
 		/**
@@ -34,9 +34,6 @@ namespace Utils
 		*/
 		static int ORDERING;
 
-		static string OUTPUT_FILE;
-
-
+		static string output_file;
 	};
 }
-

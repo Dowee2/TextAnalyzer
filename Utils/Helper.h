@@ -2,7 +2,8 @@
 
 #include <iostream>
 using namespace std;
-namespace Utils
+
+namespace utils
 {
 	class Helper
 	{
@@ -12,7 +13,7 @@ namespace Utils
 		/*
 		* Converts a string to lowercase
 		*/
-		static string toLower(string text);
+		static string toLower(const string& text);
 
 
 		/*
@@ -23,5 +24,3 @@ namespace Utils
 		static void saveToFile(string text);
 	};
 }
-
-

@@ -1,17 +1,14 @@
 #include "Settings.h"
 
-int Utils::Settings::COLUMN_COUNT = 4;
-int Utils::Settings::COLUMN_WIDTH = 18;
-bool Utils::Settings::ISOVERWRITING = false;
-int Utils::Settings::ORDERING = 0;
-std::string Utils::Settings::OUTPUT_FILE = "";
+int utils::Settings::COLUMN_COUNT = 4;
+int utils::Settings::COLUMN_WIDTH = 18;
+bool utils::Settings::ISOVERWRITING = false;
+int utils::Settings::ORDERING = 0;
+std::string utils::Settings::output_file;
 
-namespace Utils
+namespace utils
 {
 	Settings::Settings()
 	{
-		
 	}
-
-
 }

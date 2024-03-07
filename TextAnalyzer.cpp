@@ -1,13 +1,13 @@
 // TextAnalyzer.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
 #include "Model/Controller.h"
 
-using namespace Models;
+using namespace models;
+
 int main(int argc, char* argv[])
 {
-	Controller controller(argc,argv);
+	Controller controller(argc, argv);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

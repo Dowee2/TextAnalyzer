@@ -4,22 +4,21 @@
 #include "Utils/Helper.h"
 #include "Printer/Output.h"
 
-using namespace Utils;
-namespace Models
+using namespace utils;
+
+namespace models
 {
-	AnalyzeText::AnalyzeText(string filePath)
+	AnalyzeText::AnalyzeText(const string& filePath)
 	{
 		buildLibrary(filePath);
 	}
 
 	AnalyzeText::AnalyzeText()
 	{
-
 	}
 
 	AnalyzeText::~AnalyzeText()
 	{
-
 	}
 
 	void AnalyzeText::buildLibrary(string filePath)
@@ -29,32 +28,32 @@ namespace Models
 		if (inputfile.is_open())
 		{
 			string line;
-			while (getline(inputfile, line)) {
-				
+			while (getline(inputfile, line))
+			{
 				std::istringstream iss(line);
 				std::string word;
-				while (iss >> word) {
+				while (iss >> word)
+				{
 					word = Helper::toLower(word);
 					removePunctuation(word);
 					if (word != "")
 					{
 						addWord(word);
 					}
-					
 				}
 			}
 			inputfile.close();
 		}
 		else
 		{
-			Utils::Helper::Print("Error: File not found");
+			Helper::Print("Error: File not found");
 		}
 	}
 
 	void AnalyzeText::addWord(const string& word)
 	{
 		Helper::toLower(word);
-		if (this->parsedWords.count(word) > 0)
+		if (this->parsedWords.contains(word))
 		{
 			this->parsedWords[word]++;
 		}
@@ -67,7 +66,7 @@ namespace Models
 	void AnalyzeText::removeWord(string& word)
 	{
 		Helper::toLower(word);
-		if (this->parsedWords.count(word) > 0)
+		if (this->parsedWords.contains(word))
 		{
 			this->parsedWords.erase(word);
 		}
@@ -79,34 +78,39 @@ namespace Models
 
 		if (decrementby.find_first_not_of("0123456789") != string::npos)
 		{
-			throw std::invalid_argument("Value passed in for /d should be an integer. Values passed in.... word: " + word + ", integer: " + decrementby);
+			throw std::invalid_argument(
+				"Value passed in for /d should be an integer. Values passed in.... word: " + word + ", integer: " +
+				decrementby);
 		}
 		int value = stoi(decrementby);
-		if (this->parsedWords.count(word) > 0)
+		if (this->parsedWords.contains(word))
 		{
 			this->parsedWords[word] -= value;
 		}
-		else {
+		else
+		{
 			return;
 		}
 
 		if (this->parsedWords[word] <= 0)
 		{
 			this->removeWord(word);
-		}		
+		}
 	}
 
 	void AnalyzeText::incrementWord(string& word, string incrementby)
 	{
-		word = Helper::toLower(word);	
+		word = Helper::toLower(word);
 
 		if (incrementby.find_first_not_of("0123456789") != string::npos)
 		{
-			throw std::invalid_argument("Value for /a must be an word followed by an integer. Values passed in... word: " + word + ", integer: " +incrementby);
+			throw std::invalid_argument(
+				"Value for /a must be an word followed by an integer. Values passed in... word: " + word + ", integer: "
+				+ incrementby);
 		}
 		int value = stoi(incrementby);
-	
-		if (this->parsedWords.count(word) > 0)
+
+		if (this->parsedWords.contains(word))
 		{
 			this->parsedWords[word] += value;
 		}
@@ -136,9 +140,9 @@ namespace Models
 	map<int, vector<string>> AnalyzeText::getWordsByFrequency() const
 	{
 		map<int, vector<string>> wordsByFrequency;
-		for (auto it = this->parsedWords.begin(); it != this->parsedWords.end(); it++)
+		for (auto it = this->parsedWords.begin(); it != this->parsedWords.end(); ++it)
 		{
-			if (wordsByFrequency.count(it->second) > 0)
+			if (wordsByFrequency.contains(it->second))
 			{
 				wordsByFrequency[it->second].push_back(it->first);
 			}
@@ -153,9 +157,9 @@ namespace Models
 	map<char, vector<string>> AnalyzeText::getWordsByAlphabet() const
 	{
 		map<char, vector<string>> wordsByAlphabet;
-		for (auto it = this->parsedWords.begin(); it != this->parsedWords.end(); it++)
+		for (auto it = this->parsedWords.begin(); it != this->parsedWords.end(); ++it)
 		{
-			if (wordsByAlphabet.count(it->first[0]) > 0)
+			if (wordsByAlphabet.contains(it->first[0]))
 			{
 				wordsByAlphabet[it->first[0]].push_back(it->first);
 			}
@@ -164,9 +168,6 @@ namespace Models
 				wordsByAlphabet[it->first[0]] = vector<string>{it->first};
 			}
 		}
-		return wordsByAlphabet;	
+		return wordsByAlphabet;
 	}
-
-
-
 }

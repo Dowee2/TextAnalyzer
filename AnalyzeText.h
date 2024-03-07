@@ -5,12 +5,12 @@
 
 using namespace std;
 
-namespace Models
+namespace models
 {
 	class AnalyzeText
 	{
 	public:
-		AnalyzeText(string filePath);
+		AnalyzeText(const string& filePath);
 		AnalyzeText();
 		~AnalyzeText();
 
@@ -45,7 +45,7 @@ namespace Models
 		* @param decrementby The amount to decrement the word by
 		*
 		*/
-		void decrementWord( string& word, string decrementby);
+		void decrementWord(string& word, string decrementby);
 
 		/*
 		* Increments the count of the specified word by the specified amount
@@ -86,9 +86,5 @@ namespace Models
 	private:
 		map<string, int> parsedWords;
 		void removePunctuation(string& text);
-		
 	};
-	
 }
-
-
