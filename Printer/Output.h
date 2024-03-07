@@ -16,9 +16,9 @@ namespace View
 		Output();
 		~Output();
 
-		void static printUsageStatement();
-		void static printError(const string& error);
-		bool static promptOverwite(string filename);
+		void printUsageStatement();
+		void printError(string error);
+		bool static promptOverwite();
 
 		string getOutput() const;
 

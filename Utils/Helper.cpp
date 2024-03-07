@@ -3,7 +3,9 @@
 #include "../Printer/Output.h"	
 
 #include <fstream>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace std;
 namespace Utils
 {
@@ -24,11 +26,12 @@ namespace Utils
 
 	void Helper::saveToFile(string text)
 	{
-		fstream file;
 		string filename = Settings::OUTPUT_FILE;
-		if (file.is_open())
+
+		if (fs::exists(filename) && !Settings::ISOVERWRITING)
 		{
-			if (View::Output::promptOverwite(filename)) {
+			if (View::Output::promptOverwite()) {
+				ofstream file(filename, std::ios::out);
 				file.open(filename, ios::out);
 				file << text;
 				file.close();
@@ -36,6 +39,7 @@ namespace Utils
 		}
 		else
 		{
+			std::ofstream file(filename, std::ios::out);
 			file.open(filename, ios::out);
 			file << text;
 			file.close();

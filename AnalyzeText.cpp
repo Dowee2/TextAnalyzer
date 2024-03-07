@@ -36,7 +36,11 @@ namespace Models
 				while (iss >> word) {
 					word = Helper::toLower(word);
 					removePunctuation(word);
-					addWord(word);
+					if (word != "")
+					{
+						addWord(word);
+					}
+					
 				}
 			}
 			inputfile.close();
@@ -72,46 +76,44 @@ namespace Models
 	void AnalyzeText::decrementWord(string& word, string decrementby)
 	{
 		word = Helper::toLower(word);
-		try
-		{
-			int value = stoi(decrementby);
-			if (this->parsedWords.count(word) > 0)
-			{
-				this->parsedWords[word] -= value;
-			}
-			if (this->parsedWords[word] <= 0)
-			{
-				this->removeWord(word);
-			}
-		}
-		catch (const std::exception&)
-		{
-			View::Output::printError("Error: Value passed in for /d should be an integer.");
 
+		if (decrementby.find_first_not_of("0123456789") != string::npos)
+		{
+			throw std::invalid_argument("Value passed in for /d should be an integer. Values passed in.... word: " + word + ", integer: " + decrementby);
 		}
-		
+		int value = stoi(decrementby);
+		if (this->parsedWords.count(word) > 0)
+		{
+			this->parsedWords[word] -= value;
+		}
+		else {
+			return;
+		}
+
+		if (this->parsedWords[word] <= 0)
+		{
+			this->removeWord(word);
+		}		
 	}
 
 	void AnalyzeText::incrementWord(string& word, string incrementby)
 	{
-		word = Helper::toLower(word);
-		try
+		word = Helper::toLower(word);	
+
+		if (incrementby.find_first_not_of("0123456789") != string::npos)
 		{
-			int value = stoi(incrementby);
-			if (this->parsedWords.count(word) > 0)
-			{
-				this->parsedWords[word] += value;
-			}
-			else
-			{
-				this->parsedWords[word] = value;
-			}
+			throw std::invalid_argument("Value for /a must be an word followed by an integer. Values passed in... word: " + word + ", integer: " +incrementby);
 		}
-		catch (const std::exception&)
+		int value = stoi(incrementby);
+	
+		if (this->parsedWords.count(word) > 0)
 		{
-			View::Output::printError("Error: Value passed in for /a should be an integer.");
+			this->parsedWords[word] += value;
 		}
-		
+		else
+		{
+			this->parsedWords[word] = value;
+		}
 	}
 
 	void AnalyzeText::removePunctuation(string& text)
@@ -163,8 +165,6 @@ namespace Models
 			}
 		}
 		return wordsByAlphabet;	
-
-		
 	}
 
 

@@ -3,6 +3,7 @@
 #include "../Printer/Output.h"
 #include "../AnalyzeText.h"
 #include "../Utils/Settings.h"
+#include <vector>
 
 using namespace View;
 namespace Models
@@ -14,6 +15,7 @@ namespace Models
 	char** argv;
 	string inFile;
 	string outFile;
+	map<string, vector<string>> deferredOperations;
 
 	Utils::Settings settings;
 	Output output;
@@ -21,6 +23,7 @@ namespace Models
 
 	void handleArguments();
 	void run();
+	void processDeferredOperations();
 
 	public:
 		Controller(int argc, char* argv[]);

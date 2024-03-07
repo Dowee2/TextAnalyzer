@@ -30,14 +30,14 @@ namespace View
             << "   /w<number>      Changes the column width for the output columns.The default column width is 18." << endl;
 	}
 
-    void Output::printError(const string& error)
+    void Output::printError(string error)
     {
 		cout << "Error: " << error << endl;
 	}
 
-    bool Output::promptOverwite(string filename)
+    bool Output::promptOverwite()
     {
-        cout << "The file " + filename + " already exists. Do you want to overwrite it? (y/n)" << endl;
+        cout << "The file " << Settings::OUTPUT_FILE << " already exists. Do you want to overwrite it? (y/n)" << endl;
         string response;
         cin >> response;
         if (response == "y")
@@ -70,6 +70,7 @@ namespace View
 					columnCount = 0;
 				}
 			}
+            stream << endl <<endl;
         }
         cout << stream.str();
         output = stream.str();
@@ -79,6 +80,7 @@ namespace View
     {
         int columnCount = 0;
         ostringstream stream;
+
         for (auto letter : words)
         {
 			stream << "Words starting with " << letter.first << " : " <<endl;
@@ -92,7 +94,7 @@ namespace View
 					columnCount = 0;
 				}
 			}
-			cout << endl;
+            stream << endl;
 		}
         cout << stream.str();
         output = stream.str();

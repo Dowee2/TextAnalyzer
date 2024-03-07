@@ -25,7 +25,7 @@ namespace Utils
 		 * If true, the output file will be overwritten without prompting the user.
 		 * If false, the user will be prompted if the output file already exists.
 		 */
-		static bool OVERWRITE;
+		static bool ISOVERWRITING;
 
 		/**
 		*@brief Flag to determine the sorting order of the output.

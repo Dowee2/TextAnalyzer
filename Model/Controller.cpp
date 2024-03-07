@@ -26,84 +26,134 @@ namespace Models
 			output.printUsageStatement();
 			exit(1);
 		}
-
-		for (size_t i = 1; i < argc; i++)
+		try
 		{
-			string arg = this->argv[i];
+			for (size_t i = 1; i < argc; i++)
+			{
+				string arg = this->argv[i];
 
-			if (arg[0] != '/') {
-				if (this->inFile == "")
-				{
-					this->inFile = arg;
-				} else
-				{
-					Settings::OUTPUT_FILE = arg;
+				if (arg[0] != '/') {
+					if (this->inFile == "")
+					{
+						this->inFile = arg;
+						this->analyzeText.buildLibrary(this->inFile);
+					}
+					else
+					{
+						Settings::OUTPUT_FILE = arg;
+					}
 				}
-			}
-			else if (arg == "/?") {
-				output.printUsageStatement();
-			}
-			else if (arg == "/a" ) {
-				string word = this->argv[i + 1];
-				string count = this->argv[i + 2];
-				i = i + 2;
-				analyzeText.incrementWord(word, count);
-			}
-			else if (arg[1] == 'c') 
-			{
-				int column = arg[2] - '0';
-				Settings::COLUMN_COUNT = column;
-			}
+				else if (arg == "/?") {
+					output.printUsageStatement();
+				}
+				else if (arg == "/a" || arg == "/d" || arg == "/da") {
+					if (arg == "/a" || arg == "/d")
+					{
+						if (i+2 > argc)
+						{
+							throw std::invalid_argument("Not enough arguments passed in for " + arg + "Usage is: " + arg + " <word> <count>.");
+						}
+						string word = this->argv[i + 1];
+						string count = this->argv[i + 2];
+						i += 2;
+						this->deferredOperations[arg].push_back(word);
+						this->deferredOperations[arg].push_back(count);
+					}
+					else {
+						if (i + 1 > argc)
+						{
+							throw std::invalid_argument("Not enough Arguments passed in for " + arg + "Usage is: " + arg + " <word>.");
+						}
+						string word = this->argv[i + 1];
+						i += 1;
+						this->deferredOperations[arg].push_back(word);
+					}
+				}
+				else if (arg[1] == 'c')
+				{
+					string value = arg.substr(2);
+					if (value.find_first_not_of("0123456789") != string::npos)
+					{
+						throw std::invalid_argument("Argument passed in for /c should be an integer. I.e /c6 for column count of 6");
+					}
+					int column = stoi(value);
+					Settings::COLUMN_COUNT = column;
+				}
 
-			else if (arg[1] == 'w')
-			{
-				int width = arg[2] - '0';
-				Settings::COLUMN_WIDTH = width;
-			}
+				else if (arg[1] == 'w')
+				{
+					string value = arg.substr(2);
+					if (value.find_first_not_of("0123456789") != string::npos)
+					{
+						throw std::invalid_argument("Value passed in for /w should be an integer. I.e /w10 for column width of 10");
+					}
+					int width = stoi(value);
+					Settings::COLUMN_WIDTH = width;
+				}
+				else if (arg == "/o")
+				{
+					Settings::ISOVERWRITING = true;
+				}
 
-			else if (arg == "/d") 
-			{
-				string word = this->argv[i + 1];
-				string count = this->argv[i + 2];
-				i = i + 2;
-				
-				analyzeText.decrementWord(word, count);
-			}
+				else if (arg == "/sa")
+				{
+					Settings::ORDERING = 1;
+				}
 
-			else if (arg == "/da") 
-			{
-				string word = this->argv[i + 1];
-				analyzeText.removeWord(word);
 			}
-
-			else if (arg == "/0") 
-			{
-				Settings::OVERWRITE = true;
-			}
-			
-			else if (arg == "/sa")
-			{
-				Settings::ORDERING = 1;
-			}
-	
 		}
-		analyzeText = AnalyzeText(this->inFile);
+		catch (const std::exception& e)
+		{
+			Helper::Print("Invalid arguments");
+			this->output.printUsageStatement();
+			this->output.printError(e.what());
+			exit(1);
+		}
+		if (this->inFile == "")
+		{
+			Helper::Print("No input file specified");
+			output.printUsageStatement();
+			exit(1);
+		}
 	}
 
 	void Controller::run()
 	{
+		this->processDeferredOperations();
 		if (Settings::ORDERING == 0)
 		{
-			output.displayWordsByFrequency(analyzeText.getWordsByFrequency());
+			this->output.displayWordsByFrequency(analyzeText.getWordsByFrequency());
 		}
 		else
 		{
-			output.displayWordsByAlphabet(analyzeText.getWordsByAlphabet());
+			this->output.displayWordsByAlphabet(analyzeText.getWordsByAlphabet());
 		}
+
 
 		if (Settings::OUTPUT_FILE != "")
 		{
 			Helper::saveToFile(output.getOutput());
+		}
+	}
+
+	void Controller::processDeferredOperations()
+	{
+		for (auto operation : this->deferredOperations)
+		{
+			if (operation.first == "/a")
+			{
+				this->analyzeText.incrementWord(operation.second[0], operation.second[1]);
+			}
+
+			if (operation.first == "/d")
+			{
+				this->analyzeText.decrementWord(operation.second[0], operation.second[1]);
+			}
+
+			if (operation.first == "/da")
+			{
+				this->analyzeText.removeWord(operation.second[0]);
+			}
 		}
 	}
 }	

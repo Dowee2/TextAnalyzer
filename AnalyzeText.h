@@ -60,10 +60,16 @@ namespace Models
 		*/
 		map<char, vector<string>> getWordsByAlphabet() const;
 
+		/**
+		* Builds a collection of words and their frequency from the specified file
+		* 
+		*/
+		void buildLibrary(string filePath);
+
 	private:
 		map<string, int> parsedWords;
 		void removePunctuation(string& text);
-		void buildLibrary(string filePath);
+		
 	};
 	
 }
