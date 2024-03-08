@@ -46,7 +46,7 @@ namespace models
 		}
 		else
 		{
-			Helper::Print("Error: File not found");
+			Helper::Print("Error: File " + filePath + " not found");
 		}
 	}
 

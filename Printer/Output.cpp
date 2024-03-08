@@ -39,7 +39,7 @@ namespace View
 			<< "   /sa             Displays the output in alphabetic order instead of by frequency which is the default output format."
 			<< endl
 			<< "   /w<number>      Changes the column width for the output columns.The default column width is 18." <<
-			endl;
+			endl <<endl;
 	}
 
 	void Output::printError(const string& error)
@@ -66,13 +66,13 @@ namespace View
 
 	void Output::displayWordsByFrequency(const map<int, vector<string>>& words)
 	{
-		int columnCount = 0;
 		ostringstream stream;
 
-		for (auto frequency : words)
+		for (auto frequency = words.rbegin(); frequency != words.rend(); ++frequency)
 		{
-			stream << "Words with frequency " << frequency.first << " : " << endl;
-			for (auto word : frequency.second)
+			int columnCount = 0;
+			stream << "Words with frequency " << frequency->first << " : " << endl;
+			for (auto word : frequency->second)
 			{
 				stream << left << setw(Settings::COLUMN_WIDTH) << word;
 				columnCount++;
@@ -90,11 +90,11 @@ namespace View
 
 	void Output::displayWordsByAlphabet(const map<char, vector<string>>& words)
 	{
-		int columnCount = 0;
 		ostringstream stream;
 
 		for (auto letter : words)
 		{
+			int columnCount = 0;
 			stream << "Words starting with " << letter.first << " : " << endl;
 			for (auto word : letter.second)
 			{
@@ -106,7 +106,7 @@ namespace View
 					columnCount = 0;
 				}
 			}
-			stream << endl;
+			stream << endl << endl;
 		}
 		cout << stream.str();
 		output = stream.str();

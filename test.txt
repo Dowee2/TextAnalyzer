@@ -1,13 +1,2 @@
-Words with frequency 1 : 
-adventure      am             answer         ate            
-cat            eggs           green          ham            
-hat            i              in             said           
-sam            story          the            
-
-Words with frequency 2 : 
-another        
-
-
-Words with frequency 6 : 
-and            
-
+Answer: The cat in the hat
+ate     green eggs and ham, said “Sam I am.” Another  great story and another great adventure. 

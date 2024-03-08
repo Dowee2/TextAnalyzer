@@ -36,7 +36,7 @@ namespace View
 		string getOutput() const;
 
 		/*
-		* Displays words which are grouped by their frequency
+		* Displays words which are grouped by their frequency. The most frequent words are displayed first.
 		* @param map<char, vector<string>> words The collection of words to be displayed
 		*/
 		void displayWordsByFrequency(const map<int, vector<string>>& words);

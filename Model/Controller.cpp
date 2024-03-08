@@ -53,10 +53,10 @@ namespace models
 				{
 					if (arg == "/a" || arg == "/d")
 					{
-						if (i + 2 > argc)
+						if (i + 2 >= argc)
 						{
 							throw std::invalid_argument(
-								"Not enough arguments passed in for " + arg + "Usage is: " + arg + " <word> <count>.");
+								"Not enough arguments passed in for " + arg + " Usage is: " + arg + " <word> <count>.");
 						}
 						string word = this->argv[i + 1];
 						string count = this->argv[i + 2];
@@ -69,7 +69,7 @@ namespace models
 						if (i + 1 > argc)
 						{
 							throw std::invalid_argument(
-								"Not enough Arguments passed in for " + arg + "Usage is: " + arg + " <word>.");
+								"Not enough Arguments passed in for " + arg + " Usage is: " + arg + " <word>.");
 						}
 						string word = this->argv[i + 1];
 						i += 1;
@@ -109,6 +109,7 @@ namespace models
 					Settings::ORDERING = 1;
 				}
 			}
+			this->processDeferredOperations();
 		}
 		catch (const std::exception& e)
 		{
@@ -127,7 +128,7 @@ namespace models
 
 	void Controller::run()
 	{
-		this->processDeferredOperations();
+		
 		if (Settings::ORDERING == 0)
 		{
 			this->output.displayWordsByFrequency(analyzeText.getWordsByFrequency());
